@@ -1,62 +1,38 @@
 # SERIE-JOURNAL - Fase 1
 
-Trabalho prático desenvolvido para a disciplina de **Desenvolvimento de Sistemas Frontend**.
+## Nome: Gabriel Herculano Facchini
 
-**Aluno:** Gabriel Herculano Facchini
+Para executar este projeto:
 
----
-
-## Descrição do Projeto
-
-O **SERIE-JOURNAL** é uma aplicação simples desenvolvida em React (utilizando o Vite) para catalogar e registrar as séries assistidas pelo usuário. Nesta Fase 1, o projeto utiliza estritamente conceitos básicos de React, como o gerenciamento de estados com `useState`, repasse de dados através de `props`, e renderização condicional dos componentes, sem uso de bibliotecas adicionais de gerenciamento de estado ou roteamento externo.
-
----
-
-## Componentes do Sistema
-
-* **App.jsx (Componente Principal):** Gerencia o estado global da aplicação (como a aba atual e o array de séries), detém os dados mockados iniciais e as funções de CRUD estático (`adicionarSerie`, `editarSerie` e `deletarSerie`), além de controlar a exibição condicional das páginas de acordo com a navegação.
-* **NavBar (Navegação):** Barra superior contendo botões simples para navegar entre as seções: Página Inicial, Sobre, Cadastrar e Listar. Garante que, ao acessar a aba de cadastro direto, o formulário seja aberto limpo.
-* **SerieForm (Formulário):** Componente de entrada de dados para cadastrar ou editar uma série. Possui validação interna para impedir o envio de campos em branco e detecta quando há uma série selecionada para edição, preenchendo automaticamente os campos correspondentes.
-* **SerieList (Listagem):** Apresenta uma tabela estruturada contendo todos os 7 campos obrigatórios das séries assistidas. Possui um campo de filtro dinâmico no topo para buscar séries por título ou categoria e disponibiliza os botões individuais de 'Editar' e 'Excluir' para cada registro.
-
----
-
-## Como Executar o Projeto Localmente
-
-Siga o passo a passo abaixo para executar a aplicação em sua máquina:
-
-1. **Extrair os arquivos:**
-   Extraia todo o conteúdo do arquivo `.zip` enviado para uma pasta de sua escolha.
-
-2. **Instalar Dependências:**
-   Abra o terminal de comandos na pasta raiz do projeto extraído e execute o comando abaixo para baixar as dependências necessárias:
+1. Extraia o conteúdo do arquivo `.zip` enviado em uma pasta no seu computador.
+2. Acesse a pasta `serie-journal` no seu terminal:
+   ```bash
+   cd serie-journal
+   ```
+3. Rode `npm install` para instalar as dependências do projeto:
    ```bash
    npm install
    ```
-
-3. **Executar em Modo de Desenvolvimento:**
-   Após a conclusão da instalação, inicie o servidor local rodando o comando:
+4. E em seguida, `npm run dev` para iniciar a execução do projeto:
    ```bash
    npm run dev
    ```
 
-4. **Acessar a Aplicação:**
-   Abra o seu navegador e acesse o endereço retornado pelo terminal (geralmente `http://localhost:5173`).
-
----
-
-## Demonstração Visual (Prints das Telas)
-
-Insira as imagens geradas de cada tela nas pastas correspondentes ou ajuste os caminhos abaixo:
-
-### Página Inicial (Home)
-![Página Inicial](./prints/home.png)
-
-### Página de Listagem
+Após a execução do projeto, este é o resultado esperado no navegador:
+![Página Inicial (Home)](./prints/home.png)
 ![Lista de Séries](./prints/listar.png)
-
-### Formulário de Cadastro / Edição
 ![Formulário de Cadastro](./prints/cadastrar.png)
-
-### Página Sobre o Projeto
 ![Sobre o Projeto](./prints/sobre.png)
+
+## Introdução
+
+Este projeto consiste na Fase 1 do desenvolvimento do sistema **SERIE-JOURNAL**, um diário e catálogo pessoal de séries assistidas. O projeto foi construído usando React com Vite e atende estritamente às diretrizes das Aulas 1 a 5, empregando estados (`useState`), propriedades (`props`) e renderização condicional básica para controle de fluxo e exibição de abas, sem o uso de bibliotecas de terceiros para roteamento ou persistência/gerenciamento avançado de estado.
+
+## Componentes
+
+Os componentes estão organizados no diretório `./src/components` com a seguinte estrutura:
+
+* **App.jsx (Componente Principal):** Gerencia o estado central da aplicação (aba ativa `currentTab`, listagem de séries `series` e série em edição `editingSerie`). Implementa as operações estáticas do CRUD (`adicionarSerie`, `editarSerie` e `deletarSerie`) e coordena a exibição condicional das telas.
+* **NavBar:** Componente obrigatório responsável pela navegação entre as 4 abas ('home', 'sobre', 'cadastrar', 'listar'). Contém botões específicos para alternar as abas e garante a limpeza do estado de edição ao clicar para cadastrar uma nova série.
+* **SerieForm:** Componente obrigatório contendo o formulário de cadastro e edição. Possui estados locais agrupados em `formData` com os 7 campos obrigatórios, monitora a prop `editingSerie` para preenchimento no modo de edição, valida o preenchimento de todos os campos e oferece funcionalidade de cancelamento.
+* **SerieList:** Componente obrigatório que exibe a listagem de séries em formato de tabela. Apresenta todas as informações das séries, inclui controles na linha para acionar a edição e a remoção, e disponibiliza um filtro textual dinâmico no topo para buscar séries por título ou categoria.
