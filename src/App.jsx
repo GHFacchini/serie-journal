@@ -14,19 +14,39 @@ function App() {
       temporadas: 5,
       lancamento: 2008,
       diretor: 'Vince Gilligan',
-      produtora: 'Sony Pictures Television',
+      produtora: 'Sony Pictures',
       categoria: 'Drama',
       dataAssistido: '2023-05-15'
     },
     {
       id: 2,
-      titulo: 'Stranger Things',
-      temporadas: 4,
-      lancamento: 2016,
-      diretor: 'The Duffer Brothers',
-      produtora: 'Netflix',
-      categoria: 'Ficção Científica',
-      dataAssistido: '2024-01-10'
+      titulo: 'The Office',
+      temporadas: 9,
+      lancamento: 2005,
+      diretor: 'Greg Daniels',
+      produtora: 'NBC',
+      categoria: 'Comédia',
+      dataAssistido: '2023-06-20'
+    },
+    {
+      id: 3,
+      titulo: 'Shameless',
+      temporadas: 11,
+      lancamento: 2011,
+      diretor: 'John Wells',
+      produtora: 'Warner Bros',
+      categoria: 'Comédia Dramática',
+      dataAssistido: '2023-08-10'
+    },
+    {
+      id: 4,
+      titulo: 'How I Met Your Mother',
+      temporadas: 9,
+      lancamento: 2005,
+      diretor: 'Carter Bays',
+      produtora: '20th Century Fox',
+      categoria: 'Comédia',
+      dataAssistido: '2024-02-12'
     }
   ]);
 
@@ -48,17 +68,17 @@ function App() {
 
   return (
     <div className="app-container">
-      <NavBar 
-        currentTab={currentTab} 
-        setCurrentTab={setCurrentTab} 
-        setEditingSerie={setEditingSerie} 
+      <NavBar
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        setEditingSerie={setEditingSerie}
       />
-      
+
       <main className="content">
         {currentTab === 'home' && (
           <div className="tab-content">
             <h1>SERIE-JOURNAL</h1>
-            <p>Bem-vindo ao seu diário de séries. Acompanhe e registre todas as produções que você já assistiu de forma simples e organizada.</p>
+            <p>Bem-vindo ao seu diário de séries. Acompanhe e registre todas as séries que você já assistiu de forma simples e organizada.</p>
           </div>
         )}
 
@@ -71,23 +91,23 @@ function App() {
         )}
 
         {currentTab === 'cadastrar' && (
-          <SerieForm 
-            adicionarSerie={adicionarSerie} 
-            editarSerie={editarSerie} 
-            editingSerie={editingSerie} 
+          <SerieForm
+            adicionarSerie={adicionarSerie}
+            editarSerie={editarSerie}
+            editingSerie={editingSerie}
             setEditingSerie={setEditingSerie}
             setCurrentTab={setCurrentTab}
           />
         )}
 
         {currentTab === 'listar' && (
-          <SerieList 
-            series={series} 
-            deletarSerie={deletarSerie} 
+          <SerieList
+            series={series}
+            deletarSerie={deletarSerie}
             setEditingSerie={(serie) => {
               setEditingSerie(serie);
               setCurrentTab('cadastrar');
-            }} 
+            }}
           />
         )}
       </main>
