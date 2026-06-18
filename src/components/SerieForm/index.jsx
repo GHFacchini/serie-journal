@@ -156,6 +156,7 @@ function SerieForm() {
             name="dataAssistido"
             type="date"
             InputLabelProps={{ shrink: true }}
+            // tive que colocar esse slotProps porque a label estava bugando com o campo de data
             slotProps={{ inputLabel: { shrink: true } }}
             value={formData.dataAssistido}
             onChange={handleChange}
