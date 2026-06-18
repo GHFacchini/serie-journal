@@ -156,6 +156,7 @@ function SerieForm() {
             name="dataAssistido"
             type="date"
             InputLabelProps={{ shrink: true }}
+            slotProps={{ inputLabel: { shrink: true } }}
             value={formData.dataAssistido}
             onChange={handleChange}
           />
