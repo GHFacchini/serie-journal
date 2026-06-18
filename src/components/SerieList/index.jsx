@@ -92,7 +92,7 @@ function SerieList() {
                 <TableCell sx={{ fontWeight: 'bold' }}>Produtora</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Categoria</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Data Assistido</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', align: 'center' }}>Ações</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Ações</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -106,8 +106,8 @@ function SerieList() {
                     <TableCell>{serie.produtora}</TableCell>
                     <TableCell>{serie.categoria}</TableCell>
                     <TableCell>{serie.dataAssistido}</TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', gap: 1 }}>
+                    <TableCell align="center">
+                      <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
                         <Button 
                           variant="contained" 
                           color="primary" 
