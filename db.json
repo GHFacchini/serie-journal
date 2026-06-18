@@ -1,0 +1,45 @@
+{
+  "series": [
+    {
+      "id": "1",
+      "titulo": "Breaking Bad",
+      "temporadas": 5,
+      "lancamento": 2008,
+      "diretor": "Vince Gilligan",
+      "produtora": "Sony Pictures",
+      "categoria": "Drama",
+      "dataAssistido": "2023-05-15"
+    },
+    {
+      "id": "2",
+      "titulo": "The Office",
+      "temporadas": 9,
+      "lancamento": 2005,
+      "diretor": "Greg Daniels",
+      "produtora": "NBC",
+      "categoria": "Comédia",
+      "dataAssistido": "2023-06-20"
+    },
+    {
+      "id": "3",
+      "titulo": "Shameless",
+      "temporadas": 11,
+      "lancamento": 2011,
+      "diretor": "John Wells",
+      "produtora": "Warner Bros",
+      "categoria": "Comédia Dramática",
+      "dataAssistido": "2023-08-10"
+    },
+    {
+      "titulo": "smiling friends",
+      "temporadas": 3,
+      "lancamento": 2022,
+      "diretor": "Zach Hadal",
+      "produtora": "Hbo",
+      "categoria": "Animação",
+      "dataAssistido": "2026-06-17",
+      "id": "87BQ3GQBxhs"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
