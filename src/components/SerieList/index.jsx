@@ -25,11 +25,11 @@ function SerieList() {
 
   const fetchSeries = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/series');
+      const response = await axios.get('http://localhost:5000/series');
       setSeries(response.data);
       setError('');
     } catch (err) {
-      setError('Erro ao carregar as séries da API. Verifique se o servidor JSON-Server está rodando na porta 3001.');
+      setError('Erro ao carregar as séries da API. Verifique se o servidor API está rodando na porta 5000.');
       console.error(err);
     }
   };
@@ -41,7 +41,7 @@ function SerieList() {
   const handleDelete = async (id) => {
     if (window.confirm('Deseja realmente excluir esta série?')) {
       try {
-        await axios.delete(`http://localhost:3001/series/${id}`);
+        await axios.delete(`http://localhost:5000/series/${id}`);
         setSeries(prev => prev.filter(serie => serie.id !== id));
       } catch (err) {
         setError('Erro ao deletar a série da API.');

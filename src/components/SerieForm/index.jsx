@@ -67,9 +67,9 @@ function SerieForm() {
 
     try {
       if (editingSerie) {
-        await axios.put(`http://localhost:3001/series/${editingSerie.id}`, formattedData);
+        await axios.put(`http://localhost:5000/series/${editingSerie.id}`, formattedData);
       } else {
-        await axios.post('http://localhost:3001/series', formattedData);
+        await axios.post('http://localhost:5000/series', formattedData);
       }
       navigate('/listar');
     } catch (err) {
