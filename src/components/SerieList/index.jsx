@@ -1,7 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { 
+  Container, 
+  Paper, 
+  Typography, 
+  TextField, 
+  Button, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  Box,
+  Alert
+} from '@mui/material';
 
-function SerieList({ series, deletarSerie, setEditingSerie }) {
+function SerieList() {
+  const navigate = useNavigate();
+  const [series, setSeries] = useState([]);
   const [filterText, setFilterText] = useState('');
+  const [error, setError] = useState('');
+
+  const fetchSeries = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/series');
+      setSeries(response.data);
+      setError('');
+    } catch (err) {
+      setError('Erro ao carregar as séries da API. Verifique se o servidor JSON-Server está rodando na porta 3001.');
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchSeries();
+  }, []);
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Deseja realmente excluir esta série?')) {
+      try {
+        await axios.delete(`http://localhost:3001/series/${id}`);
+        setSeries(prev => prev.filter(serie => serie.id !== id));
+      } catch (err) {
+        setError('Erro ao deletar a série da API.');
+        console.error(err);
+      }
+    }
+  };
 
   const filteredSeries = series.filter(serie => {
     const term = filterText.toLowerCase();
@@ -12,68 +59,87 @@ function SerieList({ series, deletarSerie, setEditingSerie }) {
   });
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Lista de Séries</h2>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" component="h2" gutterBottom color="primary" sx={{ fontWeight: 'bold' }}>
+          Lista de Séries
+        </Typography>
 
-      <div style={{ marginBottom: '15px' }}>
-        <label style={{ marginRight: '10px', fontWeight: 'bold' }}>Filtrar por Título ou Categoria:</label>
-        <input
-          type="text"
-          placeholder="Buscar..."
-          value={filterText}
-          onChange={(e) => setFilterText(e.target.value)}
-          style={{ padding: '5px', width: '300px' }}
-        />
-      </div>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
 
-      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-        <thead>
-          <tr style={{ backgroundColor: '#f2f2f2' }}>
-            <th>Título</th>
-            <th>Temporadas</th>
-            <th>Lançamento</th>
-            <th>Diretor</th>
-            <th>Produtora</th>
-            <th>Categoria</th>
-            <th>Data Assistido</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredSeries.length > 0 ? (
-            filteredSeries.map((serie) => (
-              <tr key={serie.id}>
-                <td>{serie.titulo}</td>
-                <td>{serie.temporadas}</td>
-                <td>{serie.lancamento}</td>
-                <td>{serie.diretor}</td>
-                <td>{serie.produtora}</td>
-                <td>{serie.categoria}</td>
-                <td>{serie.dataAssistido}</td>
-                <td>
-                  <button 
-                    onClick={() => setEditingSerie(serie)}
-                    style={{ marginRight: '5px', padding: '5px 10px', cursor: 'pointer', background: '#008CBA', color: 'white', border: 'none' }}
-                  >
-                    Editar
-                  </button>
-                  <button 
-                    onClick={() => deletarSerie(serie.id)}
-                    style={{ padding: '5px 10px', cursor: 'pointer', background: '#f44336', color: 'white', border: 'none' }}
-                  >
-                    Excluir
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8" style={{ textAlign: 'center' }}>Nenhuma série encontrada.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+        <Box sx={{ mb: 3 }}>
+          <TextField
+            fullWidth
+            label="Filtrar por Título ou Categoria"
+            placeholder="Buscar..."
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+          />
+        </Box>
+
+        <TableContainer component={Paper} elevation={1}>
+          <Table>
+            <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold' }}>Título</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Temporadas</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Lançamento</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Diretor</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Produtora</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Categoria</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Data Assistido</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', align: 'center' }}>Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredSeries.length > 0 ? (
+                filteredSeries.map((serie) => (
+                  <TableRow key={serie.id} hover>
+                    <TableCell>{serie.titulo}</TableCell>
+                    <TableCell>{serie.temporadas}</TableCell>
+                    <TableCell>{serie.lancamento}</TableCell>
+                    <TableCell>{serie.diretor}</TableCell>
+                    <TableCell>{serie.produtora}</TableCell>
+                    <TableCell>{serie.categoria}</TableCell>
+                    <TableCell>{serie.dataAssistido}</TableCell>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button 
+                          variant="contained" 
+                          color="primary" 
+                          size="small"
+                          onClick={() => navigate('/cadastrar', { state: { editingSerie: serie } })}
+                        >
+                          Editar
+                        </Button>
+                        <Button 
+                          variant="contained" 
+                          color="error" 
+                          size="small"
+                          onClick={() => handleDelete(serie.id)}
+                        >
+                          Excluir
+                        </Button>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={8} align="center">
+                    Nenhuma série encontrada.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </Container>
   );
 }
 

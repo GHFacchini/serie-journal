@@ -1,36 +1,46 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 
-function NavBar({ currentTab, setCurrentTab, setEditingSerie }) {
+function NavBar() {
   return (
-    <nav style={{ padding: '10px', background: '#f0f0f0', marginBottom: '20px' }}>
-      <button 
-        onClick={() => setCurrentTab('home')}
-        style={{ marginRight: '10px', fontWeight: currentTab === 'home' ? 'bold' : 'normal' }}
-      >
-        Página Inicial
-      </button>
-      <button 
-        onClick={() => setCurrentTab('sobre')}
-        style={{ marginRight: '10px', fontWeight: currentTab === 'sobre' ? 'bold' : 'normal' }}
-      >
-        Sobre
-      </button>
-      <button 
-        onClick={() => {
-          setEditingSerie(null);
-          setCurrentTab('cadastrar');
-        }}
-        style={{ marginRight: '10px', fontWeight: currentTab === 'cadastrar' ? 'bold' : 'normal' }}
-      >
-        Cadastrar Séries
-      </button>
-      <button 
-        onClick={() => setCurrentTab('listar')}
-        style={{ fontWeight: currentTab === 'listar' ? 'bold' : 'normal' }}
-      >
-        Lista de Séries
-      </button>
-    </nav>
+    <AppBar position="static" color="primary">
+      <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+          SERIE-JOURNAL
+        </Typography>
+        <Box>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/"
+          >
+            Página Inicial
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/sobre"
+          >
+            Sobre
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/cadastrar"
+          >
+            Cadastrar Séries
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/listar"
+          >
+            Lista de Séries
+          </Button>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
 

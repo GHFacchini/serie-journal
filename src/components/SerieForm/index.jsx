@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { Container, Paper, Typography, TextField, Button, Box, Alert } from '@mui/material';
 
-function SerieForm({ adicionarSerie, editarSerie, editingSerie, setEditingSerie, setCurrentTab }) {
+function SerieForm() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const editingSerie = location.state?.editingSerie || null;
+
   const [formData, setFormData] = useState({
     titulo: '',
     temporadas: '',
@@ -36,7 +43,7 @@ function SerieForm({ adicionarSerie, editarSerie, editingSerie, setEditingSerie,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (
       !formData.titulo || 
@@ -58,115 +65,122 @@ function SerieForm({ adicionarSerie, editarSerie, editingSerie, setEditingSerie,
       lancamento: Number(formData.lancamento)
     };
 
-    if (editingSerie) {
-      editarSerie(formattedData);
-    } else {
-      adicionarSerie(formattedData);
+    try {
+      if (editingSerie) {
+        await axios.put(`http://localhost:3001/series/${editingSerie.id}`, formattedData);
+      } else {
+        await axios.post('http://localhost:3001/series', formattedData);
+      }
+      navigate('/listar');
+    } catch (err) {
+      setError('Ocorreu um erro ao salvar a série. Verifique se o servidor API está rodando.');
+      console.error(err);
     }
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-      <h2>{editingSerie ? 'Editar Série' : 'Cadastrar Nova Série'}</h2>
-      
-      {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
+    <Container maxWidth="sm" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h5" component="h2" gutterBottom align="center" color="primary" sx={{ fontWeight: 'bold' }}>
+          {editingSerie ? 'Editar Série' : 'Cadastrar Nova Série'}
+        </Typography>
 
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>Título:</label>
-          <input 
-            type="text" 
-            name="titulo" 
-            value={formData.titulo} 
-            onChange={handleChange} 
-            style={{ width: '100%', padding: '5px' }} 
-          />
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>Temporadas:</label>
-          <input 
-            type="number" 
-            name="temporadas" 
-            value={formData.temporadas} 
-            onChange={handleChange} 
-            style={{ width: '100%', padding: '5px' }} 
-          />
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>Ano de Lançamento:</label>
-          <input 
-            type="number" 
-            name="lancamento" 
-            value={formData.lancamento} 
-            onChange={handleChange} 
-            style={{ width: '100%', padding: '5px' }} 
-          />
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>Diretor:</label>
-          <input 
-            type="text" 
-            name="diretor" 
-            value={formData.diretor} 
-            onChange={handleChange} 
-            style={{ width: '100%', padding: '5px' }} 
-          />
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>Produtora:</label>
-          <input 
-            type="text" 
-            name="produtora" 
-            value={formData.produtora} 
-            onChange={handleChange} 
-            style={{ width: '100%', padding: '5px' }} 
-          />
-        </div>
-
-        <div style={{ marginBottom: '10px' }}>
-          <label style={{ display: 'block' }}>Categoria:</label>
-          <input 
-            type="text" 
-            name="categoria" 
-            value={formData.categoria} 
-            onChange={handleChange} 
-            style={{ width: '100%', padding: '5px' }} 
-          />
-        </div>
-
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block' }}>Data em que Assistiu:</label>
-          <input 
-            type="date" 
-            name="dataAssistido" 
-            value={formData.dataAssistido} 
-            onChange={handleChange} 
-            style={{ width: '100%', padding: '5px' }} 
-          />
-        </div>
-
-        <button type="submit" style={{ padding: '10px 15px', marginRight: '10px', background: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer' }}>
-          {editingSerie ? 'Salvar Alterações' : 'Cadastrar'}
-        </button>
-
-        {editingSerie && (
-          <button 
-            type="button" 
-            onClick={() => {
-              setEditingSerie(null);
-              setCurrentTab('listar');
-            }} 
-            style={{ padding: '10px 15px', background: '#f44336', color: 'white', border: 'none', cursor: 'pointer' }}
-          >
-            Cancelar
-          </button>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
         )}
-      </form>
-    </div>
+
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Título"
+            name="titulo"
+            value={formData.titulo}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Temporadas"
+            name="temporadas"
+            type="number"
+            value={formData.temporadas}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Data de Lançamento da Temporada (Ano)"
+            name="lancamento"
+            type="number"
+            value={formData.lancamento}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Diretor"
+            name="diretor"
+            value={formData.diretor}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Produtora"
+            name="produtora"
+            value={formData.produtora}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Categoria"
+            name="categoria"
+            value={formData.categoria}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Data em que assistiu"
+            name="dataAssistido"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={formData.dataAssistido}
+            onChange={handleChange}
+          />
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              sx={{ px: 4 }}
+            >
+              {editingSerie ? 'Salvar' : 'Cadastrar'}
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => navigate('/listar')}
+              sx={{ px: 4 }}
+            >
+              Cancelar
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 
