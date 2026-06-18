@@ -115,7 +115,7 @@ function SerieForm() {
             margin="normal"
             required
             fullWidth
-            label="Data de Lançamento da Temporada (Ano)"
+            label="Ano de Lançamento"
             name="lancamento"
             type="number"
             value={formData.lancamento}
